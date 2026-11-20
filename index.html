@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="market-analysis.css" />
   <link rel="stylesheet" href="world-simulation.css" />
   <link rel="stylesheet" href="living-world-rpg.css" />
+  <link rel="stylesheet" href="living-3d.css" />
 </head>
 <body>
   <main class="app">
@@ -60,7 +61,7 @@
         <article><span>Müşteri</span><strong id="customers">0</strong><em id="customerInfo">İlk müşteriyi kazanın</em></article>
         <article><span>İtibar</span><strong id="reputation">50 / 100</strong><em id="reputationInfo">Piyasa sizi tanıyor</em></article>
       </section>
-      <section class="panel world3d"><div class="panel-heading"><div><span class="eyebrow">3D ŞİRKET DÜNYASI</span><h3 id="worldTitle">Canlı ofis</h3></div><div class="world-actions"><button id="officeView" class="world-active">Ofis</button><button id="cityView">Şehir</button><button id="warehouseView">Operasyon</button></div></div><canvas id="worldCanvas" width="1000" height="360" aria-label="Etkileşimli üç boyutlu şirket dünyası"></canvas><p id="worldCaption">Departman yatırımları ve ekip büyüklüğü ofisinizin canlı görünümünü değiştirir.</p></section>
+      <section class="panel world3d"><div class="panel-heading"><div><span class="eyebrow">3D ŞİRKET DÜNYASI · OTONOM YAŞAM</span><h3 id="worldTitle">Canlı ofis</h3></div><div class="world-actions"><button id="officeView" class="world-active">Ofis</button><button id="cityView">Şehir</button><button id="warehouseView">Operasyon</button></div></div><canvas id="worldCanvas" width="1000" height="360" aria-label="Otonom karakterlerin bulunduğu etkileşimli üç boyutlu şirket dünyası"></canvas><div class="world-controlbar"><div class="world-clock"><strong id="worldTimeLabel">08:45</strong><span id="worldDayLabel">Gün 1</span><span id="worldAiStatus">12 otonom karakter · üretim aktif</span></div><div class="world-control-group"><button id="worldPause">Duraklat</button><button data-world-speed="1" class="world-active">1x</button><button data-world-speed="2">2x</button><button data-world-speed="4">4x</button><button data-world-speed="8">8x</button></div><div class="world-control-group"><select id="worldCharacterSelect" aria-label="Takip edilecek karakter"></select><button data-world-camera="free" class="world-active">Serbest</button><button data-world-camera="follow">Karakteri takip et</button><button data-world-camera="department">Departmanı izle</button><button data-world-camera="meeting">Toplantı kamerası</button></div></div><div id="worldFeed" class="world-feed" aria-live="polite"><span><b>WORLD</b> Otonom ekip 08:45 mesaisine hazırlanıyor.</span></div><p id="worldCaption">Karakterler ihtiyaçlarına göre çalışır, mola verir, toplantı yapar ve mesai sonunda çıkar.</p></section>
       <section class="panel analytics-card"><div class="panel-heading"><div><span class="eyebrow">SİMÜLASYON ANALİTİĞİ</span><h3>Karar–sonuç laboratuvarı</h3></div><b id="learningBadge" class="tag neutral">İLK KARAR BEKLENİYOR</b></div><div class="analytics-grid"><span>Planlanan yatırım<b id="analyticInvestment">₺0</b></span><span>Gerçekleşen kâr / zarar<b id="analyticProfit">—</b></span><span>Müşteri değişimi<b id="analyticCustomers">—</b></span><span>Çıkarım<b id="analyticInsight">İlk tur sonrası oluşacak</b></span></div><p id="analyticCopy">Her turda kararlarınız kaydedilir. Rehberli mod, tahmininiz ile gerçekleşen sonucu karşılaştırmanızı sağlar.</p></section>
       <section class="macro panel"><div class="panel-heading"><div><span class="eyebrow">EKONOMİK GÜNDEM</span><h3 id="macroTitle">Dengeli ekonomik görünüm</h3></div><span id="macroTag" class="tag neutral">STABİL</span></div><p id="macroCopy">Talep ve finansmana erişim normal seyrinde. Şirketinizin iç kararları daha belirleyici.</p><div class="macro-signals"><span>Talep <b id="macroDemand">●●●○○</b></span><span>Maliyet <b id="macroCost">●●●○○</b></span><span>Finansman <b id="macroCredit">●●●○○</b></span></div></section>
       <section class="company-grid">
@@ -150,7 +151,8 @@
   <script src="market-analysis-ui.js"></script>
   <script src="world-simulation-ui.js"></script>
   <script src="world3d-fallback.js"></script>
+  <script src="world3d-controls.js?rev=20261120-controls5"></script>
   <script src="living-world-rpg.js"></script>
-  <script type="module" src="world3d.js"></script>
+  <script type="module" src="world3d.js?rev=20261120-3d5"></script>
 </body>
 </html>
