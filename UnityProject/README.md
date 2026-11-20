@@ -12,15 +12,17 @@ This is a separate Unity 6 prototype. The production web game remains in the sib
 - Runtime office asset loading with no geometric human fallback.
 - Runtime camera follow rig and Windows x64 editor build menu.
 - V2 modules for utility-based needs, employee memory/relationships, smart objects, company time speeds, meetings, automatic scene direction, NPC inspection and staggered LOD budgeting.
+- V3 first world slice: a bounded 500 x 500 Liberty Bay business district, rival company presence, traffic route network, day/night lighting and deterministic weather state.
+- V3 asset boundary: city buildings, factories, container terminal and vehicles are loaded only from `Assets/Resources/City`; missing licensed art is reported and labelled scaffolding is used for the district layout. No human or vehicle model is silently presented as final art.
 
 ## Required local setup
 
-Unity 6 is installed and the Package Manager IPC service now starts correctly. The remaining blocker is licensing: batch mode reports `No valid Unity Editor license found` and exits with code 198. Open Unity Hub, sign in with the Unity account that owns the Personal license, activate/renew the license, then reopen this project. Do not share credentials in chat.
+Unity 6 is installed, the Unity Personal entitlement is active with unlimited expiration, and the Package Manager IPC service starts correctly. Do not share credentials in chat.
 
 The GLB files are imported through Unity glTFast. If the package cannot resolve, the models remain in the project but the runtime will report a clear missing-asset error instead of creating placeholder people.
 
 Open `Assets/Scenes/OfficePrototype.unity`, press Play, and use `Company CEO Simulator/Build Windows x64` after the package manager is healthy.
 
-The V2 acceptance test is intentionally still pending: licensing stops Unity before asset import, so no FPS, NavMesh, animation or ten-minute autonomous-run result is reported as successful yet.
+The V2/V3 acceptance test is still pending until a full Unity import and Windows build completes on this machine. No FPS, NavMesh, animation or ten-minute autonomous-run result is reported as successful yet.
 
 Asset licenses are preserved in `Assets/Resources/Characters/LICENSE.md` and `Assets-OFFICE-LICENSE.md`.

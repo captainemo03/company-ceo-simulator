@@ -49,6 +49,8 @@ namespace CompanyCEO.UnityRemake
             gameObject.AddComponent<AutomaticSceneDirector>();
             gameObject.AddComponent<NpcInspectionPanel>();
             gameObject.AddComponent<PerformanceBudget>();
+            gameObject.AddComponent<LibertyBayWorld>();
+            gameObject.AddComponent<CEOCommuteController>();
             Debug.Log("Company CEO Unity prototype initialized with 10 independent real-GLB agents.");
         }
 
