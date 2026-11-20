@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+PlayerSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 27
+  productGUID: 8f0b93fae9ee4ce49b54bb93b6d7c4e1
+  productName: Company CEO Simulator Unity
+  defaultScreenWidth: 1920
+  defaultScreenHeight: 1080
+  targetFrameRate: 60
+  resizableWindow: 1
+  allowFullscreenSwitch: 1
+  usePlayerLog: 1
+  activeColorSpace: 0
+  colorSpace: 0
+  scriptingBackend:
+    Standalone: 1
+  managedStrippingLevel:
+    EmbeddedLinux: 1
+    GameCoreScarlett: 1
+    GameCoreXboxOne: 1
+    Nintendo Switch: 1
+    PS4: 1
+    PS5: 1
+    QNX: 1
+    Stadia: 1
+    Standalone: 4
+    VisionOS: 1
+    WebGL: 1
+    Windows Store Apps: 1
+    XboxOne: 1
+  applicationIdentifier:
+    Standalone: com.companyceosimulator.unity
+  bundleVersion: 0.1.0
+  companyName: Company CEO Simulator
+  productName: Company CEO Simulator Unity
