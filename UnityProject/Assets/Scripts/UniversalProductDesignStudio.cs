@@ -448,21 +448,35 @@ namespace CompanyCEO.UnityRemake
             try
             {
                 var importer = Activator.CreateInstance(type);
-                var load = type.GetMethod("Load", new[] { typeof(string) });
-                if (load == null) throw new MissingMethodException("GltfImport.Load");
-                var task = load.Invoke(importer, new object[] { path }) as Task;
+                var load = Array.Find(type.GetMethods(), method =>
+                    method.Name == "Load" && method.GetParameters().Length > 0 && method.GetParameters()[0].ParameterType == typeof(string));
+                if (load == null) throw new MissingMethodException("GltfImport.Load(string,...)");
+                var loadParameters = load.GetParameters();
+                var loadArguments = new object[loadParameters.Length];
+                loadArguments[0] = path;
+                for (var i = 1; i < loadArguments.Length; i++) loadArguments[i] = OptionalArgument(loadParameters[i]);
+                var task = load.Invoke(importer, loadArguments) as Task;
                 if (task == null) throw new InvalidOperationException("GLB yükleme görevi oluşturulamadı.");
                 await task;
                 var root = new GameObject(Path.GetFileNameWithoutExtension(path)); root.transform.SetParent(productRoot);
-                var instantiate = Array.Find(type.GetMethods(), x => x.Name == "InstantiateMainSceneAsync" && x.GetParameters().Length > 0);
+                var instantiate = Array.Find(type.GetMethods(), x => x.Name == "InstantiateMainSceneAsync" && x.GetParameters().Length > 0 && x.GetParameters()[0].ParameterType == typeof(Transform));
                 if (instantiate == null) throw new MissingMethodException("GltfImport.InstantiateMainSceneAsync");
-                var parameters = instantiate.GetParameters().Length == 1 ? new object[] { root.transform } : new object[] { root.transform, 0 };
+                var instantiateParameters = instantiate.GetParameters();
+                var parameters = new object[instantiateParameters.Length];
+                parameters[0] = root.transform;
+                for (var i = 1; i < parameters.Length; i++) parameters[i] = OptionalArgument(instantiateParameters[i]);
                 if (instantiate.Invoke(importer, parameters) is Task instantiateTask) await instantiateTask;
                 var part = new UniversalPartData { name = root.name, primitive = UniversalPrimitive.Imported, material = UniversalMaterial.Composite };
                 CaptureMeshData(root, part);
                 data.parts.Add(part); objects[part.id] = root.gameObject; selectedPart = part; data.mode = UniversalDesignMode.Imported; lastMessage = "GLB/GLTF model içe aktarıldı."; Changed();
             }
             catch (Exception error) { lastMessage = "GLB içe aktarma başarısız: " + error.GetBaseException().Message; }
+        }
+
+        private static object OptionalArgument(ParameterInfo parameter)
+        {
+            if (parameter.HasDefaultValue && parameter.DefaultValue != System.Reflection.Missing.Value) return parameter.DefaultValue;
+            return parameter.ParameterType.IsValueType ? Activator.CreateInstance(parameter.ParameterType) : null;
         }
 
         private static void CaptureMeshData(GameObject root, UniversalPartData part)

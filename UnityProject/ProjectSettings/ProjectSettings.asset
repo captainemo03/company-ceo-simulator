@@ -15,7 +15,7 @@ PlayerSettings:
   activeColorSpace: 0
   colorSpace: 0
   scriptingBackend:
-    Standalone: 1
+    Standalone: 0
   managedStrippingLevel:
     EmbeddedLinux: 1
     GameCoreScarlett: 1

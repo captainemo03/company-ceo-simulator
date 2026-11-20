@@ -5,11 +5,11 @@ This is a separate Unity 6 prototype. The production web game remains in the sib
 ## Current prototype
 
 - Unity `6000.4.0f1` project scaffold.
-- URP, AI Navigation, Cinemachine, Animation Rigging, Timeline and glTFast package declarations.
-- Real CC0 GLB assets copied into `Assets/Resources/Characters` and `Assets/Resources/Office`.
+- AI Navigation and glTFast package declarations compatible with Unity `6000.4.0f1`.
+- Real CC0 GLB assets are kept in `Assets/Resources/Characters` and `Assets/Resources/Office`, and copied to `Assets/StreamingAssets` for standalone runtime loading.
 - Two autonomous agents: CEO and CFO.
 - Independent spawn/target routes, `NavMeshAgent`, avoidance priorities and stuck detection.
-- Runtime office asset loading with no geometric human fallback.
+- Runtime office and character asset loading through glTFast with no geometric human fallback. The bootstrap waits for the GLB scenes before baking the office NavMesh.
 - Runtime camera follow rig and Windows x64 editor build menu.
 - V2 modules for utility-based needs, employee memory/relationships, smart objects, company time speeds, meetings, automatic scene direction, NPC inspection and staggered LOD budgeting.
 - V3 first world slice: a bounded 500 x 500 Liberty Bay business district, rival company presence, traffic route network, day/night lighting and deterministic weather state.
@@ -23,10 +23,10 @@ This is a separate Unity 6 prototype. The production web game remains in the sib
 
 Unity 6 is installed, the Unity Personal entitlement is active with unlimited expiration, and the Package Manager IPC service starts correctly. Do not share credentials in chat.
 
-The GLB files are imported through Unity glTFast. If the package cannot resolve, the models remain in the project but the runtime will report a clear missing-asset error instead of creating placeholder people.
+The GLB files are loaded through Unity glTFast from `StreamingAssets`. If a file or package is unavailable, the runtime reports a clear error instead of creating placeholder people.
 
 Open `Assets/Scenes/OfficePrototype.unity`, press Play, and use `Company CEO Simulator/Build Windows x64` after the package manager is healthy.
 
-The V2/V3 acceptance test is still pending until a full Unity import and Windows build completes on this machine. No FPS, NavMesh, animation or ten-minute autonomous-run result is reported as successful yet.
+The Unity import and Windows x64 build have completed successfully with Mono scripting backend. A standalone smoke run reaches the GTX 1650/D3D12 player without managed exceptions; the remaining acceptance work is a longer autonomous-run and visual inspection of the loaded GLB scenes.
 
-Asset licenses are preserved in `Assets/Resources/Characters/LICENSE.md` and `Assets-OFFICE-LICENSE.md`.
+Asset licenses are preserved in `Assets/Resources/Characters/LICENSE.md`, `Assets/StreamingAssets/Characters/LICENSE.md` and `Assets-OFFICE-LICENSE.md`.

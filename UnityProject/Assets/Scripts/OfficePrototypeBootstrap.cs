@@ -22,12 +22,12 @@ namespace CompanyCEO.UnityRemake
             root.AddComponent<OfficePrototypeBootstrap>();
         }
 
-        private void Start()
+        private async void Start()
         {
             Application.targetFrameRate = 60;
             QualitySettings.vSyncCount = 0;
             BuildTargets();
-            LoadOfficeAssets();
+            await LoadOfficeAssetsAsync();
             var city = gameObject.AddComponent<LibertyBayWorld>();
             city.BuildNow();
             BuildNavigationSurfaceIfAvailable();
@@ -45,7 +45,7 @@ namespace CompanyCEO.UnityRemake
                 new OfficeAgentProfile { id = "operations", displayName = "Ozan Tunç", role = "Operations" }
             };
             var positions = new[] { new Vector3(-3.2f, 0f, 1.2f), new Vector3(-1.4f, 0f, -2.4f), new Vector3(-.6f, 0f, -2.4f), new Vector3(.2f, 0f, -2.4f), new Vector3(1f, 0f, -2.4f), new Vector3(1.8f, 0f, -2.4f), new Vector3(2.6f, 0f, -2.4f), new Vector3(3.4f, 0f, -2.4f), new Vector3(4.2f, 0f, -2.4f), new Vector3(5f, 0f, -2.4f) };
-            for (var i = 0; i < profiles.Length; i++) SpawnAgent(i % 2 == 0 ? "Characters/CEO" : "Characters/FinanceManager", profiles[i], positions[i], i);
+            for (var i = 0; i < profiles.Length; i++) await SpawnAgentAsync(i % 2 == 0 ? "Characters/CEO.glb" : "Characters/FinanceManager.glb", profiles[i], positions[i], i);
             SetupCamera();
             gameObject.AddComponent<MeetingSystem>();
             gameObject.AddComponent<AutomaticSceneDirector>();
@@ -76,12 +76,12 @@ namespace CompanyCEO.UnityRemake
             return t;
         }
 
-        private void LoadOfficeAssets()
+        private async System.Threading.Tasks.Task LoadOfficeAssetsAsync()
         {
             var root = new GameObject("Licensed Office Environment");
-            InstantiateResource("Office/MeetingRoom", root.transform, new Vector3(2.8f, 0f, 1.2f), .72f);
-            InstantiateResource("Office/CubiclePod", root.transform, new Vector3(-1.8f, 0f, 1.3f), .82f);
-            InstantiateResource("Office/Reception", root.transform, new Vector3(3.8f, 0f, -2.2f), .62f);
+            await RuntimeGltfLoader.LoadAsync("Office/MeetingRoom.glb", root.transform, new Vector3(2.8f, 0f, 1.2f), .72f);
+            await RuntimeGltfLoader.LoadAsync("Office/CubiclePod.glb", root.transform, new Vector3(-1.8f, 0f, 1.3f), .82f);
+            await RuntimeGltfLoader.LoadAsync("Office/Reception.glb", root.transform, new Vector3(3.8f, 0f, -2.2f), .62f);
             var floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
             floor.name = "Office Navigation Floor";
             floor.transform.localScale = new Vector3(1.2f, 1f, .8f);
@@ -104,19 +104,6 @@ namespace CompanyCEO.UnityRemake
             marker.localPosition = Vector3.zero;
         }
 
-        private static GameObject InstantiateResource(string path, Transform parent, Vector3 position, float scale)
-        {
-            var prefab = Resources.Load<GameObject>(path);
-            if (prefab == null)
-            {
-                Debug.LogError($"Missing real 3D asset: Resources/{path}.glb. Install glTFast and reimport the GLB.");
-                return null;
-            }
-            var instance = Instantiate(prefab, position, Quaternion.identity, parent);
-            instance.transform.localScale = Vector3.one * scale;
-            return instance;
-        }
-
         private Transform[] BuildAgentRoute(int index)
         {
             var route = new Transform[targets.Count];
@@ -129,17 +116,11 @@ namespace CompanyCEO.UnityRemake
             return route;
         }
 
-        private void SpawnAgent(string resourcePath, OfficeAgentProfile profile, Vector3 position, int index)
+        private async System.Threading.Tasks.Task SpawnAgentAsync(string relativePath, OfficeAgentProfile profile, Vector3 position, int index)
         {
-            var prefab = Resources.Load<GameObject>(resourcePath);
-            if (prefab == null)
-            {
-                Debug.LogError($"Missing real human model: Resources/{resourcePath}.glb. No placeholder will be created.");
-                return;
-            }
-            var instance = Instantiate(prefab, position, Quaternion.identity);
+            var instance = await RuntimeGltfLoader.LoadAsync($"Characters/{System.IO.Path.GetFileName(relativePath)}", null, position, .72f);
+            if (instance == null) return;
             instance.name = profile.displayName + " · " + profile.role;
-            instance.transform.localScale = Vector3.one * .72f;
             var nav = instance.GetComponent<NavMeshAgent>() ?? instance.AddComponent<NavMeshAgent>();
             nav.baseOffset = 0f;
             var agent = instance.GetComponent<AutonomousOfficeAgent>() ?? instance.AddComponent<AutonomousOfficeAgent>();
