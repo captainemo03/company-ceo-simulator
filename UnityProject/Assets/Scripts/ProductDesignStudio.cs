@@ -152,7 +152,7 @@ namespace CompanyCEO.UnityRemake
             var logistics = 13f + (spec.screenInches - 6f) * 2f;
             metrics.unitCost = raw + cpu + gpu + ram + storage + display + camera + battery + cooling + software + labour + energy + packaging + qualityControl + logistics;
             metrics.performance = Mathf.Clamp(20f + spec.processorTier * 10f + spec.gpuTier * 8f + spec.ramTier * 5f + spec.displayTier * 3f, 0f, 100f);
-            metrics.quality = Mathf.Clamp(18f + spec.material * 12f + spec.durabilityTier * 10f + spec.displayTier * 3f, 0f, 100f);
+            metrics.quality = Mathf.Clamp(18f + (int)spec.material * 12f + spec.durabilityTier * 10f + spec.displayTier * 3f, 0f, 100f);
             metrics.reliability = Mathf.Clamp(24f + spec.durabilityTier * 11f + spec.coolingTier * 5f + spec.softwareTier * 3f - metrics.thermalRisk * .3f, 0f, 100f);
             var heat = spec.processorTier * 7f + spec.gpuTier * 6f + spec.refreshRate * .045f - spec.coolingTier * 9f;
             metrics.thermalRisk = Mathf.Clamp(heat, 0f, 100f);
