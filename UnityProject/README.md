@@ -16,6 +16,8 @@ This is a separate Unity 6 prototype. The production web game remains in the sib
 - V3 asset boundary: city buildings, factories, container terminal and vehicles are loaded only from `Assets/Resources/City`; missing licensed art is reported and labelled scaffolding is used for the district layout. No human or vehicle model is silently presented as final art.
 - Core gameplay slice: an interactive consumer-electronics Product Design Studio for a smartphone (component tiers, compatibility, BOM cost, R&D, tests, production, launch, sales and PlayerPrefs save/load).
 - The phone preview is a runtime modular prototype made of editable product components. A final release still needs a separately licensed modular smartphone asset pack; the prototype does not present the procedural preview as licensed final art.
+- Universal Product Design Studio: blank-category products, primitive modeling, freehand 2D sketch extrusion, assembly tree, material/cost effects, custom metrics, OBJ/GLB/GLTF import paths with size limits, version snapshots, world publishing and save/load.
+- The universal editor is a game simulation, not professional CAD or engineering validation. Imported GLB/GLTF loading depends on the declared glTFast package and must be rechecked in a completed Windows build.
 
 ## Required local setup
 
