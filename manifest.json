@@ -1,0 +1,10 @@
+{
+  "name": "Şirket CEO — Yönetim Simülasyonu",
+  "short_name": "Şirket CEO",
+  "lang": "tr",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#071b27",
+  "theme_color": "#071b27",
+  "description": "Ürün, finans, insan ve kriz kararlarını yöneten şirket simülasyonu."
+}
