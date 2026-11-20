@@ -123,9 +123,10 @@
       <section class="panel progress"><div class="panel-heading"><div><span class="eyebrow">BÜYÜME YOLCULUĞU</span><h3>Şirket aşaması</h3></div><b id="stageLabel">Fikir aşaması</b></div><div class="stage-line"><i id="stageProgress"></i></div><div class="stage-labels"><span>Kuruluş</span><span>Doğrulama</span><span>Büyüme</span><span>Pazar lideri</span></div><p id="boardAdvice" class="board-advice">Yönetim kurulu: İlk müşteriye ulaşmak için ürün ve görünürlüğe yatırım yapın.</p></section>
     </section>
   </main>
+  <section class="panel cinematic-director-panel"><div class="panel-heading"><div><span class="eyebrow">THE PRICE OF POWER · CINEMATIC DIRECTOR</span><h3>İş dünyası dizisi</h3></div><span id="cinematicStatus" class="tag neutral">HAZIR</span></div><p class="cinematic-intro">Karakterleri manuel yönetmeden; toplantıları, gerilimleri ve karar anlarını gerçek oyun verileriyle izleyin. Kamera, oyunculuk, altyazı ve dallanan kararlar aynı zaman çizelgesinden yürür.</p><div id="cinematicChapters" class="cinematic-chapters" aria-label="Hikâye bölümleri"></div><div id="cinematicSceneGrid" class="cinematic-scene-grid" aria-label="Oynanabilir sahneler"></div><div id="cinematicTimeline" class="cinematic-timeline" aria-live="polite"><span class="cinematic-empty">Bir sahne seçin; karakterler ve kamera otomatik oynar.</span></div><div id="cinematicSummary" class="cinematic-summary" aria-live="polite"><span class="eyebrow">BÖLÜM SONU ÖZETİ</span><p>Bir sahne tamamlandığında şirket değeri, nakit, borç, müşteri ve itibar verileri burada görünür.</p></div><button id="cinematicReplay" class="ghost">Son sahneyi tekrar oynat</button><details class="cinematic-editor"><summary>Sahne editörü · JSON</summary><p>Yeni sahneleri ana motoru değiştirmeden tanımlayın. <code>id</code>, <code>title</code> ve <code>beats</code> alanları zorunludur.</p><textarea id="cinematicSceneEditor" spellcheck="false"></textarea><button id="cinematicSceneSave" class="ghost">Sahne verisini kaydet</button></details></section>
   <section id="tutorial" class="tutorial" hidden aria-labelledby="tutorialTitle"><div class="tutorial-card"><span class="eyebrow">İLK CEO TURU · 2 DAKİKA</span><h2 id="tutorialTitle">Nasıl oynanır?</h2><p>Bu simülasyonda her tur bir ayı temsil eder. Önce tek bir plan yapar, sonra satış–gider–itibar sonucunu raporda okursun.</p><div class="tutorial-steps"><div><b>1</b><span><strong>Talebi doğrula</strong>Ürün ve pazarlama bütçesi, kaç müşterinin sizi deneyeceğini etkiler.</span></div><div><b>2</b><span><strong>Kasayı koru</strong>Ekibin, departmanların ve operasyonların aylık bir maliyeti vardır.</span></div><div><b>3</b><span><strong>Sonucu öğren</strong>Ay sonu raporunda gelir, gider, müşteri ve itibar değişimini karşılaştır.</span></div></div><button id="tutorialPlan" class="primary">Önerilen ilk turu uygula</button><button id="tutorialSkip" class="secondary">Kararları kendim vereceğim</button></div></section>
   <div id="modal" class="modal" hidden><div class="modal-card"><div id="modalIcon">✦</div><div class="eyebrow" id="modalEyebrow">AY SONU RAPORU</div><h2 id="modalTitle"></h2><p id="modalText"></p><div id="report" class="report"></div><button id="continueBtn" class="primary">Devam et <span>→</span></button></div></div>
-  <div id="storyCinematic" class="story-cinematic" hidden><div class="cinematic-card"><span class="eyebrow" data-cine-phase>HİKÂYE</span><strong data-cine-speaker>Yönetim kurulu</strong><p data-cine-copy></p><button id="cineSkip" class="ghost">Sahneyi atla</button></div></div>
+  <div id="storyCinematic" class="story-cinematic" hidden><div class="cinematic-card"><div class="cinematic-card-head"><span class="eyebrow" data-cine-phase>HİKÂYE</span><span id="cinematicMusicLabel">Müzik: Yönetim</span></div><strong data-cine-title>The Price of Power</strong><small data-cine-speaker>Yönetim kurulu</small><p data-cine-copy></p><div class="cinematic-choice-area" data-cine-choices hidden></div><div class="cinematic-card-actions"><button id="cineContinue" class="ghost" hidden>Kapat</button><button id="cineReplay" class="ghost">Tekrar izle</button><button id="cineSkip" class="ghost">Sahneyi atla</button></div></div></div>
   <script src="app.js"></script>
   <script src="simulation-engine.js"></script>
   <script src="deep-strategy.js"></script>
@@ -156,10 +157,12 @@
   <script src="character-psychology.js"></script>
   <script src="social-engine.js"></script>
   <script src="story-director.js"></script>
+  <script src="cinematic-engine.js?rev=20261120-cine2"></script>
   <script src="world-quality.js"></script>
   <script src="world3d-fallback.js"></script>
   <script src="world3d-controls.js?rev=20261120-controls6"></script>
   <script src="living-world-rpg.js"></script>
-  <script type="module" src="world3d.js?rev=20261120-3d9"></script>
+  <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.161.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.161.0/examples/jsm/"}}</script>
+  <script type="module" src="world3d.js?rev=20261120-3d16"></script>
 </body>
 </html>
