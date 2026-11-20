@@ -28,6 +28,8 @@ namespace CompanyCEO.UnityRemake
             QualitySettings.vSyncCount = 0;
             BuildTargets();
             LoadOfficeAssets();
+            var city = gameObject.AddComponent<LibertyBayWorld>();
+            city.BuildNow();
             BuildNavigationSurfaceIfAvailable();
             var profiles = new[]
             {
@@ -49,7 +51,6 @@ namespace CompanyCEO.UnityRemake
             gameObject.AddComponent<AutomaticSceneDirector>();
             gameObject.AddComponent<NpcInspectionPanel>();
             gameObject.AddComponent<PerformanceBudget>();
-            gameObject.AddComponent<LibertyBayWorld>();
             gameObject.AddComponent<CEOCommuteController>();
             Debug.Log("Company CEO Unity prototype initialized with 10 independent real-GLB agents.");
         }

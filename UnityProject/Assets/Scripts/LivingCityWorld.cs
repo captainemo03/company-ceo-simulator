@@ -39,14 +39,20 @@ namespace CompanyCEO.UnityRemake
         private Light sun;
         private float lastWeatherRoll;
         private bool warnedMissingCityAssets;
+        private bool built;
 
         public float DistrictSize => districtSize;
         public LibertyBayWeather Weather => weather;
         public IReadOnlyList<CityCompanyPresence> Companies => companies;
         public IReadOnlyList<Vector3> TrafficWaypoints => trafficWaypoints;
 
-        private void Start()
+        private void Start() => BuildNow();
+
+        /// <summary>Builds the city before the bootstrap bakes the shared NavMesh.</summary>
+        public void BuildNow()
         {
+            if (built) return;
+            built = true;
             SeedCompanyPresence();
             BuildDistrict();
             BuildLighting();
