@@ -374,6 +374,22 @@ namespace CompanyCEO.UnityRemake
             lastMessage = "Tasarım sürümü kaydedildi.";
         }
 
+        public void RestoreLatestVersion()
+        {
+            if (data.versions.Count == 0) { lastMessage = "Geri yüklenecek sürüm yok."; return; }
+            var latest = data.versions[data.versions.Count - 1];
+            var restored = JsonUtility.FromJson<UniversalProductSave>(latest.json);
+            if (restored == null) return;
+            restored.versions = data.versions;
+            data = restored;
+            foreach (var go in objects.Values) if (go != null) Destroy(go);
+            objects.Clear();
+            foreach (var part in data.parts) CreateRuntimePart(part);
+            selectedPart = data.parts.Count > 0 ? data.parts[0] : null;
+            Save();
+            lastMessage = latest.label + " geri yüklendi.";
+        }
+
         public void Save()
         {
             PlayerPrefs.SetString("company_ceo_universal_product", JsonUtility.ToJson(data)); PlayerPrefs.Save();
@@ -527,6 +543,7 @@ namespace CompanyCEO.UnityRemake
             GUILayout.EndHorizontal();
             if (GUILayout.Button("Modeli 3D dünyaya aktar")) PublishToWorld();
             if (GUILayout.Button("Sürüm kaydet")) SaveVersion();
+            if (GUILayout.Button("Son sürümü geri yükle")) RestoreLatestVersion();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Kaydet")) Save();
             if (GUILayout.Button("Yükle")) Load();
@@ -535,6 +552,15 @@ namespace CompanyCEO.UnityRemake
             externalModelPath = GUILayout.TextField(externalModelPath);
             if (GUILayout.Button("Model içe aktar")) ImportExternalModel();
             showAdvanced = GUILayout.Toggle(showAdvanced, "İleri seviye çizim araçları");
+            if (showAdvanced)
+            {
+                GUILayout.Label("İleri araçlar: eksen kilidi X/Y/Z, simetri ve parça çoğaltma");
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Duplicate")) DuplicateSelected();
+                if (GUILayout.Button("Mirror X")) MirrorSelected();
+                if (GUILayout.Button("Grid snap")) SnapSelected();
+                GUILayout.EndHorizontal();
+            }
             GUILayout.EndArea();
             drawingRect = new Rect(505f, 430f, 450f, 240f);
             if (drawingActive) DrawCanvas();
@@ -553,6 +579,27 @@ namespace CompanyCEO.UnityRemake
         {
             var delta = b - a; var angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
             var length = delta.magnitude; GUI.color = color; GUIUtility.RotateAroundPivot(angle, a); GUI.DrawTexture(new Rect(a.x, a.y - width * .5f, length, width), white); GUI.matrix = Matrix4x4.identity; GUI.color = Color.white;
+        }
+
+        private void DuplicateSelected()
+        {
+            if (selectedPart == null) return;
+            var copy = JsonUtility.FromJson<UniversalPartData>(JsonUtility.ToJson(selectedPart));
+            copy.id = Guid.NewGuid().ToString("N"); copy.name += " Copy"; copy.position += Vector3.right * .4f;
+            data.parts.Add(copy); CreateRuntimePart(copy); selectedPart = copy; Changed();
+        }
+
+        private void MirrorSelected()
+        {
+            if (selectedPart == null) return;
+            selectedPart.scale.x *= -1f; SyncRuntime(selectedPart); Changed();
+        }
+
+        private void SnapSelected()
+        {
+            if (selectedPart == null) return;
+            selectedPart.position = new Vector3(Mathf.Round(selectedPart.position.x * 4f) / 4f, Mathf.Round(selectedPart.position.y * 4f) / 4f, Mathf.Round(selectedPart.position.z * 4f) / 4f);
+            SyncRuntime(selectedPart); Changed();
         }
 
         private void OnDestroy() { if (white != null && white != Texture2D.whiteTexture) Destroy(white); }
