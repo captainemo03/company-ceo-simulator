@@ -14,6 +14,8 @@ This is a separate Unity 6 prototype. The production web game remains in the sib
 - V2 modules for utility-based needs, employee memory/relationships, smart objects, company time speeds, meetings, automatic scene direction, NPC inspection and staggered LOD budgeting.
 - V3 first world slice: a bounded 500 x 500 Liberty Bay business district, rival company presence, traffic route network, day/night lighting and deterministic weather state.
 - V3 asset boundary: city buildings, factories, container terminal and vehicles are loaded only from `Assets/Resources/City`; missing licensed art is reported and labelled scaffolding is used for the district layout. No human or vehicle model is silently presented as final art.
+- Core gameplay slice: an interactive consumer-electronics Product Design Studio for a smartphone (component tiers, compatibility, BOM cost, R&D, tests, production, launch, sales and PlayerPrefs save/load).
+- The phone preview is a runtime modular prototype made of editable product components. A final release still needs a separately licensed modular smartphone asset pack; the prototype does not present the procedural preview as licensed final art.
 
 ## Required local setup
 
