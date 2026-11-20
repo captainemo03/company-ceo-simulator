@@ -28,6 +28,8 @@ namespace CompanyCEO.UnityRemake
         [SerializeField] private NavMeshAgent navigation;
         [SerializeField] private Animator animator;
         [SerializeField] private OfficeAgentState state;
+        [SerializeField] private EmployeeNeeds needs = new EmployeeNeeds();
+        [SerializeField] private EmployeeMemory memory;
         private Transform[] route;
         private int routeIndex;
         private float nextDecision;
@@ -37,6 +39,8 @@ namespace CompanyCEO.UnityRemake
 
         public OfficeAgentProfile Profile => profile;
         public OfficeAgentState State => state;
+        public EmployeeNeeds Needs => needs;
+        public EmployeeMemory Memory => memory;
         public Vector3 SpawnPosition => spawnPosition;
         public Vector3 CurrentTarget => route != null && route.Length > 0 ? route[Mathf.Clamp(routeIndex, 0, route.Length - 1)].position : transform.position;
         public float StuckSeconds => stuckSeconds;
@@ -58,6 +62,7 @@ namespace CompanyCEO.UnityRemake
             navigation.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
             navigation.avoidancePriority = 20 + UnityEngine.Random.Range(0, 60);
             if (animator == null) animator = GetComponentInChildren<Animator>();
+            memory ??= GetComponent<EmployeeMemory>() ?? gameObject.AddComponent<EmployeeMemory>();
             SetState(state);
         }
 
@@ -65,11 +70,19 @@ namespace CompanyCEO.UnityRemake
         {
             navigation ??= GetComponent<NavMeshAgent>();
             if (animator == null) animator = GetComponentInChildren<Animator>();
+            memory ??= GetComponent<EmployeeMemory>() ?? gameObject.AddComponent<EmployeeMemory>();
         }
 
         private void Update()
         {
             if (route == null || route.Length == 0 || navigation == null || !navigation.isOnNavMesh) return;
+            var timeScale = CompanyTimeSystem.Speed;
+            needs.Tick(Time.deltaTime * timeScale, state == OfficeAgentState.Working || state == OfficeAgentState.Meeting);
+            if (Time.time >= nextDecision - profile.activityDuration * .15f && navigation.remainingDistance <= navigation.stoppingDistance)
+            {
+                AdvanceActivity();
+                return;
+            }
             if (navigation.pathPending) return;
             if (navigation.remainingDistance <= navigation.stoppingDistance)
             {
@@ -96,7 +109,18 @@ namespace CompanyCEO.UnityRemake
             var target = route[routeIndex];
             if (target == null) return;
             navigation.SetDestination(target.position);
-            state = routeIndex % 4 == 0 ? OfficeAgentState.Working : routeIndex % 4 == 1 ? OfficeAgentState.DrinkingCoffee : routeIndex % 4 == 2 ? OfficeAgentState.Meeting : OfficeAgentState.PhoneCall;
+            var selected = UtilityAIDecision.Choose(needs, profile.role, routeIndex + profile.id.GetHashCode());
+            state = selected switch
+            {
+                UtilityActivity.Drink => OfficeAgentState.DrinkingCoffee,
+                UtilityActivity.Meeting => OfficeAgentState.Meeting,
+                UtilityActivity.Phone => OfficeAgentState.PhoneCall,
+                UtilityActivity.Socialize => OfficeAgentState.Talking,
+                UtilityActivity.Eat => OfficeAgentState.Sitting,
+                UtilityActivity.Rest => OfficeAgentState.Sitting,
+                _ => OfficeAgentState.Working
+            };
+            memory?.Remember("activity", $"{profile.displayName} selected {selected}", 20f);
             nextDecision = Time.time + profile.activityDuration + UnityEngine.Random.Range(-profile.decisionJitter, profile.decisionJitter);
             if (forced) navigation.avoidancePriority = 10 + UnityEngine.Random.Range(0, 80);
         }
