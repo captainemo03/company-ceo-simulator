@@ -15,12 +15,12 @@ This is a separate Unity 6 prototype. The production web game remains in the sib
 
 ## Required local setup
 
-Unity Hub currently has Unity 6 installed, but the editor log reports a Package Manager service failure (`UnityPackageManager.exe` could not start). Repair/reinstall the Unity 6 editor installation in Unity Hub, then open this folder and allow the declared packages to resolve.
+Unity 6 is installed and the Package Manager IPC service now starts correctly. The remaining blocker is licensing: batch mode reports `No valid Unity Editor license found` and exits with code 198. Open Unity Hub, sign in with the Unity account that owns the Personal license, activate/renew the license, then reopen this project. Do not share credentials in chat.
 
 The GLB files are imported through Unity glTFast. If the package cannot resolve, the models remain in the project but the runtime will report a clear missing-asset error instead of creating placeholder people.
 
 Open `Assets/Scenes/OfficePrototype.unity`, press Play, and use `Company CEO Simulator/Build Windows x64` after the package manager is healthy.
 
-The V2 acceptance test is intentionally still pending: Unity has not completed a clean package import on this machine, so no FPS, NavMesh, animation or ten-minute autonomous-run result is reported as successful yet.
+The V2 acceptance test is intentionally still pending: licensing stops Unity before asset import, so no FPS, NavMesh, animation or ten-minute autonomous-run result is reported as successful yet.
 
 Asset licenses are preserved in `Assets/Resources/Characters/LICENSE.md` and `Assets-OFFICE-LICENSE.md`.
